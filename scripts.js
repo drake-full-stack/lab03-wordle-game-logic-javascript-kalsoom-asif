@@ -151,6 +151,35 @@ function deleteLetter() {
 //     // Your code here!
 // }
 
+function submitGuess() {
+  logDebug(`🚀 submitGuess() called`, 'info');
+
+  if (currentTile !== 5) {
+    alert("Please enter 5 letters!");
+    return;
+  }
+
+  const rowEl = rows[currentRow];
+  const tiles = rowEl.querySelectorAll('.tile');
+  const guess = Array.from(tiles).map(t => t.textContent).join('');
+
+  logDebug(`Guess: ${guess} | Target: ${TARGET_WORD}`, 'info');
+
+  if (guess === TARGET_WORD) {
+    gameOver = true;
+    setTimeout(() => alert("Congratulations! You won!"), 500);
+    return;
+  }
+
+  currentRow++;
+  currentTile = 0;
+
+  if (currentRow >= 6) {
+    gameOver = true;
+    setTimeout(() => alert("Game over!"), 100);
+  }
+}
+
 // TODO: Implement checkGuess function (the hardest part!)
 // function checkGuess(guess, tiles) {
 //     // Your code here!
