@@ -122,6 +122,30 @@ function addLetter(letter) {
 //     // Your code here!
 // }
 
+function deleteLetter() {
+  logDebug(`🗑️ deleteLetter() called`, 'info');
+
+  if (currentTile <= 0) {
+    logDebug("No letters to delete", "error");
+    return;
+  }
+
+  currentTile--;
+
+  const rowElement = rows[currentRow];
+  const tiles = rowElement.querySelectorAll('.tile');
+  const tile = tiles[currentTile];
+
+  const letterBeingDeleted = tile.textContent;
+
+  tile.textContent = '';
+  tile.classList.remove('filled');
+
+  logDebug(`Deleted '${letterBeingDeleted}' from position ${currentTile}`, 'info');
+  logDebug(`Current word: ${getCurrentWord()}`, 'info');
+}
+
+
 // TODO: Implement submitGuess function
 // function submitGuess() {
 //     // Your code here!
