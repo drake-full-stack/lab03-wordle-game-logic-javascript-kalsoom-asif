@@ -165,6 +165,9 @@ function submitGuess() {
 
   logDebug(`Guess: ${guess} | Target: ${TARGET_WORD}`, 'info');
 
+  const result = checkGuess(guess, tiles);
+  logDebug(`Result: ${JSON.stringify(result)}`, 'info');
+
   if (guess === TARGET_WORD) {
     gameOver = true;
     setTimeout(() => alert("Congratulations! You won!"), 500);
@@ -180,9 +183,44 @@ function submitGuess() {
   }
 }
 
+
 // TODO: Implement checkGuess function (the hardest part!)
 // function checkGuess(guess, tiles) {
 //     // Your code here!
 //     // Remember: handle duplicate letters correctly
 //     // Return the result array
 // }
+
+function checkGuess(guess, tiles) {
+  logDebug(`🔍 Starting analysis for "${guess}"`, 'info');
+
+  let target = TARGET_WORD.split('');
+  let guessArray = guess.split('');
+  const result = ['absent', 'absent', 'absent', 'absent', 'absent'];
+
+  for (let i = 0; i < 5; i++) {
+    if (guessArray[i] === target[i]) {
+      result[i] = 'correct';
+      target[i] = null;
+      guessArray[i] = null;
+    }
+  }
+
+  for (let i = 0; i < 5; i++) {
+    if (guessArray[i] != null) {
+      const idx = target.indexOf(guessArray[i]);
+      if (idx !== -1) {
+        result[i] = 'present';
+        target[idx] = null;
+      }
+    }
+  }
+
+  for (let i = 0; i < 5; i++) {
+    tiles[i].classList.remove('correct', 'present', 'absent');
+    tiles[i].classList.add(result[i]);
+  }
+
+  logDebug(`Result: ${JSON.stringify(result)}`, 'info');
+  return result;
+}
