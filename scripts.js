@@ -71,11 +71,51 @@ document.addEventListener('DOMContentLoaded', function() {
 // document.addEventListener("keydown", (event) => {
 //     // Your code here!
 // });
+document.addEventListener("keydown", (event) => {
+  logDebug(`Key pressed: ${event.key}`);
+
+  if (gameOver) return;
+
+  const key = event.key.toUpperCase();
+
+  if (key === "BACKSPACE") {
+    deleteLetter();
+  } else if (key === "ENTER") {
+    submitGuess();
+  } else if (/^[A-Z]$/.test(key)) {
+    addLetter(key);
+  } else {
+    logDebug(`Ignored key: ${event.key}`);
+  }
+});
 
 // TODO: Implement addLetter function
 // function addLetter(letter) {
 //     // Your code here!
 // }
+
+function addLetter(letter) {
+  logDebug(`addLetter("${letter}") called`);
+
+  
+  if (currentTile >= 5) {
+    logDebug("Row is full — ignoring extra letters");
+    return;
+  }
+
+  const rowElement = rows[currentRow];
+  const tiles = rowElement.querySelectorAll('.tile');
+
+  const tile = tiles[currentTile];
+  tile.textContent = letter;
+  tile.classList.add('filled');
+  
+  currentTile += 1;
+
+  logDebug(`Added "${letter}" to position ${currentTile - 1}`);
+  logDebug(`Current word: ${getCurrentWord()}`);
+}
+
 
 // TODO: Implement deleteLetter function  
 // function deleteLetter() {
